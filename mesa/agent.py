@@ -5,18 +5,22 @@ Core Objects: Agent
 
 """
 # mypy
-from mesa.model import Model
+from typing import Optional, TYPE_CHECKING
 from random import Random
+
+if TYPE_CHECKING:
+    from mesa.model import Model
+    from mesa.space import Position
 
 
 class Agent:
     """ Base class for a model agent. """
 
-    def __init__(self, unique_id: int, model: Model) -> None:
+    def __init__(self, unique_id: int, model: "Model") -> None:
         """ Create a new agent. """
         self.unique_id = unique_id
         self.model = model
-        self.pos = None
+        self.pos = None  # type: Optional[Position]
 
     def step(self) -> None:
         """ A single step of the agent. """
