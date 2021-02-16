@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Text Visualization
 ==================
@@ -32,7 +31,7 @@ Patch value grid).
 
 
 class TextVisualization:
-    """ ASCII-Only visualization of a model.
+    """ASCII-Only visualization of a model.
 
     Properties:
 
@@ -59,7 +58,7 @@ class TextVisualization:
 
 
 class TextElement:
-    """ Base class for all TextElements to render.
+    """Base class for all TextElements to render.
 
     Methods:
         render: 'Renders' some data into ASCII and returns.
@@ -90,7 +89,7 @@ class TextData(TextElement):
 
 
 class TextGrid(TextElement):
-    """ Class for creating an ASCII visualization of a basic grid object.
+    """Class for creating an ASCII visualization of a basic grid object.
 
     By default, assume that each cell is represented by one character, and
     that empty cells are rendered as ' ' characters. When printed, the TextGrid
@@ -104,7 +103,7 @@ class TextGrid(TextElement):
     grid = None
 
     def __init__(self, grid, converter):
-        """ Create a new ASCII grid visualization.
+        """Create a new ASCII grid visualization.
 
         Args:
             grid: The underlying Grid object.

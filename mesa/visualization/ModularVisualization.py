@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 ModularServer
 =============
@@ -96,7 +95,9 @@ Client -> Server:
     }
 
 """
+import asyncio
 import os
+import platform
 import tornado.autoreload
 import tornado.ioloop
 import tornado.web
@@ -110,6 +111,10 @@ from mesa.visualization.UserParam import UserSettableParameter
 # Suppress several pylint warnings for this file.
 # Attributes being defined outside of init is a Tornado feature.
 # pylint: disable=attribute-defined-outside-init
+
+# Change the event loop policy for windows
+if platform.system() == "Windows" and platform.python_version_tuple() >= ("3", "7"):
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
 class VisualizationElement:
@@ -138,7 +143,7 @@ class VisualizationElement:
         pass
 
     def render(self, model):
-        """ Build visualization data from a model object.
+        """Build visualization data from a model object.
 
         Args:
             model: A model object
@@ -190,9 +195,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         return {"type": "viz_state", "data": self.application.render_model()}
 
     def on_message(self, message):
-        """ Receiving a message from the websocket, parse, and act accordingly.
-
-        """
+        """Receiving a message from the websocket, parse, and act accordingly."""
         if self.application.verbose:
             print(message)
         msg = tornado.escape.json_decode(message)
@@ -231,7 +234,7 @@ class ModularServer(tornado.web.Application):
 
     verbose = True
 
-    port = 8521  # Default port to listen on
+    port = int(os.getenv("PORT", 8521))  # Default port to listen on
     max_steps = 100000
 
     # Handlers and other globals:
@@ -311,7 +314,7 @@ class ModularServer(tornado.web.Application):
         self.model = self.model_cls(**model_params)
 
     def render_model(self):
-        """ Turn the current state of the model into a dictionary of
+        """Turn the current state of the model into a dictionary of
         visualizations
 
         """
